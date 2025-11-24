@@ -7,13 +7,17 @@
     "next.js",
     "node.js"
   ],
+  "peerDependencies": {
+    "@saas/prettier": "*"
+  },
   "devDependencies": {
-    "@saasprojeto/eslint-config": "^2.2.2",
-    "eslint-plugin-simple-import-sort": "^12.0.0",
-    "@saas/prettier": "workspace:*"
+    "@rocketseat/eslint-config": "^2.2.2",
+    "eslint-plugin-simple-import-sort": "^12.1.1"
   },
   "prettier": "@saas/prettier",
   "eslintConfig": {
-    "extends": ["./library.js"]
+    "extends": [
+      "./library.js"
+    ]
   }
 }
