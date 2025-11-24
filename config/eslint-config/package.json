@@ -8,7 +8,8 @@
     "node.js"
   ],
   "peerDependencies": {
-    "@saas/prettier": "*"
+    "@saas/prettier": "workspace:*",
+    "eslint": "^8.0.0"
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.2.2",

@@ -7,7 +7,7 @@
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "skipLibCheck": true,
+    "skipLibCheck": false,
 
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -17,8 +17,14 @@
     "jsx": "react-jsx",
 
     "strict": true,
+    "strictNullChecks": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+
+    "allowJs": false,
+    "checkJs": false
   }
 }
