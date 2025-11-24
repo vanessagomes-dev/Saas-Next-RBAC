@@ -1,17 +1,13 @@
 {
-  "name": "saas-next-rbca",
+  "name": "saas-next-rbac",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "build": "turbo  build",
+    "dev": "turbo  dev",
+    "lint": "turbo lint"
   },
   "devDependencies": {
-    "prettier": "^3.6.2",
-    "turbo": "^2.6.1",
-    "typescript": "5.9.2"
+    "turbo": "latest"
   },
   "engines": {
     "node": ">=18"

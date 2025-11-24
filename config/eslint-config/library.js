@@ -1,5 +1,5 @@
 module.exports = {
-   extends: ['@saasprojeto/eslint-config/next'],
+     extends: ['@saasprojeto/eslint-config/react'],
   plugins: ['simple-import-sort'],
   rules: {
     'simple-import-sort/imports': 'error',
