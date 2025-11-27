@@ -1,3 +1,6 @@
+import 'dotenv/config'
+console.log('DATABASE_URL carregada:', process.env.DATABASE_URL)
+
 import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
 import fastifySwagger from '@fastify/swagger'
@@ -10,6 +13,8 @@ import {
   ZodTypeProvider,
 } from 'fastify-type-provider-zod'
 
+import { errorHandler } from '@/http/error-handler'
+
 import { authenticateWithPassword } from '@/http/routes/auth/authenticate-with-password'
 import { getProfile } from '@/http/routes/auth/get-profile'
 
@@ -19,6 +24,8 @@ const app = fastify().withTypeProvider<ZodTypeProvider>()
 
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
+
+app.setErrorHandler(errorHandler)
 
 app.register(fastifySwagger, {
   openapi: {
@@ -46,6 +53,11 @@ app.register(createAccount)
 
 app.register(authenticateWithPassword)
 app.register(getProfile)
+
+app.ready().then(() => {
+  console.log(app.printRoutes());
+});
+
 
 app.listen({ port: 3333 }).then(() => {
   console.log('HTTP server running!')

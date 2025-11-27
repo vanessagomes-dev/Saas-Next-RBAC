@@ -2,10 +2,17 @@ version: '3.7'
 
 services:
   pg:
-    image: bitnami/postgresql:latest
+    image: postgres:15
+    container_name: postgres_saas
+    restart: always
     ports:
       - '5432:5432'
     environment:
-      - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=docker
-      - POSTGRES_DB=next-saas
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: next-saas
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
