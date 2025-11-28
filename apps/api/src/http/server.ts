@@ -14,6 +14,7 @@ import {
 } from 'fastify-type-provider-zod'
 
 import { errorHandler } from '@/http/error-handler'
+import { authenticateWithGithub } from '@/http/routes/auth/authenticate-with-github'
 
 import { authenticateWithPassword } from '@/http/routes/auth/authenticate-with-password'
 import { getProfile } from '@/http/routes/auth/get-profile'
@@ -54,6 +55,7 @@ app.register(fastifyCors)
 app.register(createAccount)
 
 app.register(authenticateWithPassword)
+app.register(authenticateWithGithub)
 app.register(getProfile)
 app.register(requestPasswordRecover)
 app.register(resetPassword)
