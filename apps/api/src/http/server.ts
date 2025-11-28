@@ -17,6 +17,8 @@ import { errorHandler } from '@/http/error-handler'
 
 import { authenticateWithPassword } from '@/http/routes/auth/authenticate-with-password'
 import { getProfile } from '@/http/routes/auth/get-profile'
+import { requestPasswordRecover } from '@/http/routes/auth/request-password-recover'
+import { resetPassword } from '@/http/routes/auth/reset-password'
 
 import { createAccount } from './routes/auth/create-account'
 
@@ -53,6 +55,8 @@ app.register(createAccount)
 
 app.register(authenticateWithPassword)
 app.register(getProfile)
+app.register(requestPasswordRecover)
+app.register(resetPassword)
 
 app.ready().then(() => {
   console.log(app.printRoutes());
