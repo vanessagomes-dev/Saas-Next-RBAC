@@ -1,10 +1,10 @@
 import 'dotenv/config'
-console.log('DATABASE_URL carregada:', process.env.DATABASE_URL)
 
 import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
+import { env } from '@saas/env'
 import fastify from 'fastify'
 import {
   jsonSchemaTransform,
@@ -37,7 +37,15 @@ app.register(fastifySwagger, {
       description: 'Full-stack SaaS with multi-tenant & RBAC.',
       version: '1.0.0',
     },
-    servers: [],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 })
@@ -47,7 +55,7 @@ app.register(fastifySwaggerUI, {
 })
 
 app.register(fastifyJwt, {
-  secret: 'my-jwt-secret',
+  secret: env.JWT_SECRET,
 })
 
 app.register(fastifyCors)
@@ -65,6 +73,6 @@ app.ready().then(() => {
 });
 
 
-app.listen({ port: 3333 }).then(() => {
+app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log('HTTP server running!')
 })
