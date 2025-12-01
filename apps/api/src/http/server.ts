@@ -24,6 +24,7 @@ import { createOrganization } from '@/http/routes/orgs/create-organization'
 import { getMembership } from '@/http/routes/orgs/get-membership'
 import { getOrganization } from '@/http/routes/orgs/get-organization'
 import { getOrganizations } from '@/http/routes/orgs/get-organizations'
+import { updateOrganization } from '@/http/routes/orgs/update-organization'
 
 import { createAccount } from './routes/auth/create-account'
 
@@ -76,6 +77,7 @@ app.register(createOrganization)
 app.register(getMembership)
 app.register(getOrganization)
 app.register(getOrganizations)
+app.register(updateOrganization)
 
 app.ready().then(() => {
   console.log(app.printRoutes());
