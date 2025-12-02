@@ -31,6 +31,7 @@ import { createProject } from '@/http/routes/projects/create-project'
 import { deleteProject } from '@/http/routes/projects/delete-project'
 import { getProject } from '@/http/routes/projects/get-project'
 import { getProjects } from '@/http/routes/projects/get-projects'
+import { updateProject } from '@/http/routes/projects/update-projects'
 
 import { createAccount } from './routes/auth/create-account'
 
@@ -91,6 +92,7 @@ app.register(createProject)
 app.register(deleteProject)
 app.register(getProject)
 app.register(getProjects)
+app.register(updateProject)
 
 app.ready().then(() => {
   console.log(app.printRoutes());
