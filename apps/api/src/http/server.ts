@@ -29,8 +29,8 @@ import { transferOrganization } from '@/http/routes/orgs/transfer-organization'
 import { updateOrganization } from '@/http/routes/orgs/update-organization'
 import { createProject } from '@/http/routes/projects/create-project'
 import { deleteProject } from '@/http/routes/projects/delete-project'
-
-
+import { getProject } from '@/http/routes/projects/get-project'
+import { getProjects } from '@/http/routes/projects/get-projects'
 
 import { createAccount } from './routes/auth/create-account'
 
@@ -89,6 +89,8 @@ app.register(transferOrganization)
 
 app.register(createProject)
 app.register(deleteProject)
+app.register(getProject)
+app.register(getProjects)
 
 app.ready().then(() => {
   console.log(app.printRoutes());
