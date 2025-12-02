@@ -26,6 +26,7 @@ import { getInvites } from './routes/invites/get-invites'
 import { acceptInvite } from '@/http/routes/invites/accept-invite'
 import { rejectInvite } from '@/http/routes/invites/reject-invite'
 import { revokeInvite } from '@/http/routes/invites/revoke-invite'
+import { getPendingInvites } from '@/http/routes/invites/get-pending-invites'
 
 import { getMembers } from '@/http/routes/members/get-members'
 import { updateMember } from '@/http/routes/members/update-member'
@@ -115,7 +116,7 @@ app.register(getInvites)
 app.register(acceptInvite)
 app.register(rejectInvite)
 app.register(revokeInvite)
-
+app.register(getPendingInvites)
 
 app.ready().then(() => {
   console.log(app.printRoutes());
