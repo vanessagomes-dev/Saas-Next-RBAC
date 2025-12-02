@@ -21,7 +21,7 @@ import { getProfile } from '@/http/routes/auth/get-profile'
 import { requestPasswordRecover } from '@/http/routes/auth/request-password-recover'
 import { resetPassword } from '@/http/routes/auth/reset-password'
 import { createInvite } from '@/http/routes/invites/create-invite'
-
+import { getInvite } from '@/http/routes/invites/get-invite'
 
 import { getMembers } from '@/http/routes/members/get-members'
 import { updateMember } from '@/http/routes/members/update-member'
@@ -106,9 +106,7 @@ app.register(updateMember)
 app.register(removeMember)
 
 app.register(createInvite)
-
-
-
+app.register(getInvite)
 
 app.ready().then(() => {
   console.log(app.printRoutes());
