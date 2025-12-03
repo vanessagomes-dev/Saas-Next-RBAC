@@ -1,11 +1,10 @@
-// apps/web/app/(auth)/sign-in/sign-in-form.tsx
 "use client";
 
 import { AlertTriangle, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useActionState } from "react";
-import React from "react"; // Importação do React é uma boa prática
+import React from "react"; 
 
 import githubIcon from "@/assets/github-icon.svg";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -13,8 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { useFormState } from '@/hooks/use-form-state'
 
-// Importa a Server Action e o Tipo de Estado que ela retorna
 import { signInWithEmailAndPassword, SignInActionState } from "./actions"; 
 
 // Define o estado inicial do formulário (que deve corresponder ao SignInActionState)
@@ -25,7 +24,7 @@ const initialState: SignInActionState = {
 };
 
 export function SignInForm() {
-  // 1. Hook useActionState para gerenciar o estado e o loading
+
   // Tivemos que tipar o useActionState para garantir que o TypeScript reconheça as propriedades {errors, message, success}.
   const [{ errors, message, success }, formAction, isPending] = useActionState<
     SignInActionState, 
