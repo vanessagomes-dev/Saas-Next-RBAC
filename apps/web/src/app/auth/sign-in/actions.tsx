@@ -5,17 +5,18 @@ import { z } from "zod";
 
 import { signInWithPassword } from "@/http/sign-in-with-password";
 
+// DEFINIÇÃO DO TIPO DE RETORNO 
 type FieldErrors = {
-  email?: string[] | undefined
-  password?: string[] | undefined
-}
+  email?: string[] | undefined;
+  password?: string[] | undefined;
+};
 
-// Define o tipo de retorno completo da Server Action
 export type SignInActionState = {
-  success: boolean
-  message: string | null
-  errors: FieldErrors | null
-}
+  success: boolean;
+  message: string | null;
+  errors: FieldErrors | null;
+};
+// FIM DA DEFINIÇÃO DO TIPO
 
 const signInSchema = z.object({
   email: z
@@ -24,15 +25,16 @@ const signInSchema = z.object({
   password: z.string().min(1, { message: "Please, provide your password." }),
 });
 
-export async function signInWithEmailAndPassword(_: SignInActionState | null, data: FormData,
-
+export async function signInWithEmailAndPassword(
+  _: unknown,
+  data: FormData
 ): Promise<SignInActionState> {
+
   const result = signInSchema.safeParse(Object.fromEntries(data));
 
   if (!result.success) {
     const errors = result.error.flatten().fieldErrors;
-
-    return { success: false, message: null, errors };
+    return { success: false, message: null, errors }; 
   }
 
   const { email, password } = result.data;
@@ -42,17 +44,18 @@ export async function signInWithEmailAndPassword(_: SignInActionState | null, da
       email,
       password,
     });
-    console.log(token);
 
-    // Retorno de Sucesso (sem erros de campo ou mensagem de erro global)
+    console.log(token);
+    // TO DO: Salvar o token em cookies ou session storage
     return { success: true, message: 'Login realizado com sucesso!', errors: null };
-    
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message } = await err.response.json();
-      return { success: false, message, errors: null };
+      return { success: false, message, errors: null }; 
     }
+
     console.error(err);
+
     return {
       success: false,
       message: "Unexpected error, try again in a few minutes.",
