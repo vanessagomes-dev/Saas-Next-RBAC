@@ -1,11 +1,12 @@
 "use server";
 
 import { HTTPError } from "ky";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
 import { signInWithPassword } from "@/http/sign-in-with-password";
 
-// DEFINIÇÃO DO TIPO DE RETORNO 
+// DEFINIÇÃO DO TIPO DE RETORNO
 type FieldErrors = {
   email?: string[] | undefined;
   password?: string[] | undefined;
@@ -26,15 +27,13 @@ const signInSchema = z.object({
 });
 
 export async function signInWithEmailAndPassword(
-  _: unknown,
   data: FormData
 ): Promise<SignInActionState> {
-
-  const result = signInSchema.safeParse(Object.fromEntries(data));
+  const result = signInSchema.safeParse(Object.fromEntries(data))
 
   if (!result.success) {
     const errors = result.error.flatten().fieldErrors;
-    return { success: false, message: null, errors }; 
+    return { success: false, message: null, errors };
   }
 
   const { email, password } = result.data;
@@ -45,13 +44,21 @@ export async function signInWithEmailAndPassword(
       password,
     });
 
-    console.log(token);
-    // TO DO: Salvar o token em cookies ou session storage
-    return { success: true, message: 'Login realizado com sucesso!', errors: null };
+    //  Salvar o token em cookies
+    const cookieStore = await cookies();
+    cookieStore.set("token", token, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+    return {
+      success: true,
+      message: "Login realizado com sucesso!",
+      errors: null,
+    };
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message } = await err.response.json();
-      return { success: false, message, errors: null }; 
+      return { success: false, message, errors: null };
     }
 
     console.error(err);

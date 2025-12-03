@@ -3,6 +3,7 @@
 import { AlertTriangle, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from 'next/navigation'
 import { useActionState } from "react";
 import React from "react"; 
 
@@ -25,14 +26,17 @@ const initialState: SignInActionState = {
 
 export function SignInForm() {
 
-  // Tivemos que tipar o useActionState para garantir que o TypeScript reconheça as propriedades {errors, message, success}.
-  const [{ errors, message, success }, formAction, isPending] = useActionState<
-    SignInActionState, 
-    FormData
-  >(signInWithEmailAndPassword, initialState);
+  const router = useRouter()
+
+  const [{ errors, message, success }, handleSubmit, isPending] = useFormState(
+    signInWithEmailAndPassword,
+    () => {
+      router.push('/')
+    },
+  )
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       
       {/* 2. Feedback Global de Erro (API ou Erro Inesperado) */}
       {success === false && message && (
