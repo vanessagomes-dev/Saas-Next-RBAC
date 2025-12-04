@@ -1,5 +1,5 @@
 import ky from 'ky'
-import { cookies as nextCookies } from 'next/headers' // Importamos o cookies nativo do Next.js
+import { cookies as nextCookies } from 'next/headers'
 
 export const api = ky.create({
  prefixUrl: 'http://localhost:3333',
@@ -10,7 +10,7 @@ export const api = ky.create({
 
 // 1. Lógica para Server Component (SSR)
 if (typeof window === 'undefined') {
-// 🛑 CORREÇÃO: Usamos o método nativo 'cookies()' do Next.js, que garante 
+//  Usamos o método nativo 'cookies()' do Next.js, que garante 
 // a leitura do cookie recém-setado na Server Action.
 const cookieStore = nextCookies()
  token = (await cookieStore).get('token')?.value
