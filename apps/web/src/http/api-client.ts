@@ -1,24 +1,33 @@
-import { getCookie, type CookiesFn } from 'cookies-next'
 import ky from 'ky'
+import { cookies as nextCookies } from 'next/headers' // Importamos o cookies nativo do Next.js
 
 export const api = ky.create({
-  prefixUrl: 'http://localhost:3333',
-  hooks: {
-    beforeRequest: [
-      async (request) => {
-        let cookieStore: CookiesFn | undefined
+ prefixUrl: 'http://localhost:3333',
+ hooks: {
+ beforeRequest: [
+ async (request) => {
+ let token: string | undefined
 
-        if (typeof window === 'undefined') {
-          const { cookies: serverCookies } = await import('next/headers')
+// 1. Lógica para Server Component (SSR)
+if (typeof window === 'undefined') {
+// 🛑 CORREÇÃO: Usamos o método nativo 'cookies()' do Next.js, que garante 
+// a leitura do cookie recém-setado na Server Action.
+const cookieStore = nextCookies()
+ token = (await cookieStore).get('token')?.value
+ } 
+// 2. Lógica para Client Component (Browser)
+ else {
+  // Para o lado do cliente, lemos diretamente do documento (Padrão JS)
+ token = document.cookie
+ .split('; ')
+.find((row) => row.startsWith('token='))
+ ?.split('=')[1]
+ }
 
-          cookieStore = serverCookies
-        }
-        const token = getCookie('token', { cookies: cookieStore })
-
-        if (token) {
-          request.headers.set('Authorization', `Bearer ${token}`)
-        }
-      },
-    ],
-  },
+if (token) {
+request.headers.set('Authorization', `Bearer ${token}`)
+}
+ },
+ ],
+ },
 })

@@ -4,7 +4,9 @@ import { HTTPError } from "ky";
 import { cookies } from "next/headers";
 import { z } from "zod";
 
-import { signInWithPassword } from "@/http/sign-in-with-password";
+import { signInWithPassword } from '../../../http/sign-in-with-password'
+import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 // DEFINIÇÃO DO TIPO DE RETORNO
 type FieldErrors = {
@@ -50,6 +52,8 @@ export async function signInWithEmailAndPassword(
       path: "/",
       maxAge: 60 * 60 * 24 * 7, // 7 days
     });
+    revalidatePath("/");
+    redirect("/");
     return {
       success: true,
       message: "Login realizado com sucesso!",

@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { useFormState } from "@/hooks/use-form-state";
 import { signInWithGithub } from "../actions";
 
-import { signInWithEmailAndPassword, SignInActionState } from "./actions";
+import { signInWithEmailAndPassword, SignInActionState } from "./sign-in-actions";
 
 // Define o estado inicial do formulário (que deve corresponder ao SignInActionState)
 const initialState: SignInActionState = {
@@ -30,9 +30,7 @@ export function SignInForm() {
 
   const [{ errors, message, success }, handleSubmit, isPending] = useFormState(
     signInWithEmailAndPassword,
-    () => {
-      router.push("/");
-    }
+    undefined,
   );
 
   return (
