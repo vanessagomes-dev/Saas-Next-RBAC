@@ -1,28 +1,28 @@
-import { ChevronDown, LogOut } from 'lucide-react'
+import { ChevronDown, LogOut } from "lucide-react";
 
-import { auth } from '@/auth/auth'
+import { auth } from "@/auth/auth";
 
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from './ui/drop-down-menu'
-import React from 'react'
+} from "./ui/drop-down-menu";
+import React from "react";
 
 function getInitials(name: string): string {
   const initials = name
-    .split(' ')
+    .split(" ")
     .map((word) => word.charAt(0).toUpperCase())
     .slice(0, 2)
-    .join('')
+    .join("");
 
-  return initials
+  return initials;
 }
 
 export async function ProfileButton() {
-  const { user } = await auth()
+  const { user } = await auth();
 
   return (
     <DropdownMenu>
@@ -31,7 +31,7 @@ export async function ProfileButton() {
           <span className="text-sm font-medium">{user.name}</span>
           <span className="text-xs text-muted-foreground">{user.email}</span>
         </div>
-        <Avatar>
+        <Avatar className="size-8">
           {user.avatarUrl && <AvatarImage src={user.avatarUrl} />}
           {user.name && (
             <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
@@ -48,5 +48,5 @@ export async function ProfileButton() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
