@@ -9,3 +9,4 @@ ignoredBuiltDependencies:
 onlyBuiltDependencies:
   - '@prisma/engines'
   - prisma
+  - sharp
