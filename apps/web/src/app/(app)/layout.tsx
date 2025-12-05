@@ -1,19 +1,22 @@
-import React from 'react'
+import { redirect } from 'next/navigation'
 import { auth } from '@/auth/auth'
+import React from 'react'
 
-export default async function AppLayout({
+export default function AppLayout({
   children,
-  teste,
+  sheet,
 }: Readonly<{
   children: React.ReactNode
-  teste: React.ReactNode
+   sheet: React.ReactNode
 }>) {
-  await auth() // se não estiver autenticado, redireciona automaticamente
+  if (!auth()) {
+    redirect('/auth/sign-in')
+     }
 
   return (
-     <>
+    <>
       {children}
-      {teste}
+      {sheet}
     </>
   )
 }
