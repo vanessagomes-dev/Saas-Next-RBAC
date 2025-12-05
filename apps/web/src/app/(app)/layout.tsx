@@ -1,23 +1,19 @@
 import React from 'react'
-import { isAuthenticated } from '@/auth/auth'
-import { Header } from '@/components/header'
+import { auth } from '@/auth/auth'
 
-import { redirect } from 'next/navigation'
-
-
-export default function AppLayout({
+export default async function AppLayout({
   children,
+  teste,
 }: Readonly<{
   children: React.ReactNode
+  teste: React.ReactNode
 }>) {
-  if (!isAuthenticated()) {
-    redirect('/auth/sign-in')
-  }
+  await auth() // se não estiver autenticado, redireciona automaticamente
 
   return (
-    <div className="space-y-4 py-4">
-      <Header />
-      <main className="mx-auto w-full max-w-[1200px]">{children}</main>
-    </div>
+     <>
+      {children}
+      {teste}
+    </>
   )
 }

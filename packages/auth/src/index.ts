@@ -1,3 +1,4 @@
+// abilities
 import {
   AbilityBuilder,
   CreateAbility,
@@ -6,7 +7,10 @@ import {
 } from "@casl/ability";
 import { z } from 'zod'
 
-import { User } from "./models/user";
+// schemas
+import { User, userSchema } from "./models/user";
+import { Project, projectSchema } from "./models/project";
+import { Organization, organizationSchema } from "./models/organization";
 import { permissions } from "./permissions";
 
 import { billingSubject } from './subjects/billing'
@@ -15,11 +19,16 @@ import { organizationSubject } from './subjects/organization'
 import { projectSubject } from './subjects/project'
 import { userSubject } from './subjects/user'
 
-export * from './models/organization'
-export * from './models/project'
-export * from './models/user'
+// exportar todos os schemas explicitamente
+export { userSchema };
+export type { User };
+  export { projectSchema };
+export type { Project };
+export { organizationSchema };
+export type { Organization };
 export * from './roles'
 
+// ability
 const appAbilitiesSchema = z.union([
   projectSubject,
   userSubject,
