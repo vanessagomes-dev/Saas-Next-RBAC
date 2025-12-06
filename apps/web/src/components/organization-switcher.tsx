@@ -1,7 +1,7 @@
 import { ChevronsUpDown, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { getOrganizations } from "@/http/get-organization";
-import { getCurrentOrg } from '@/auth/auth'
+import { getCurrentOrg } from "@/auth/auth";
 
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
@@ -16,7 +16,7 @@ import {
 import React from "react";
 
 export async function OrganizationSwitcher() {
-  const currentOrg = await getCurrentOrg()
+  const currentOrg = await getCurrentOrg();
   const { organizations } = await getOrganizations();
   const currentOrganization = organizations.find(
     (org) => org.slug === currentOrg
@@ -26,7 +26,7 @@ export async function OrganizationSwitcher() {
       <DropdownMenuTrigger className="flex w-[168px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
         {currentOrganization ? (
           <>
-            <Avatar className="mr-2 size-4">
+            <Avatar className="size-4">
               {currentOrganization.avatarUrl && (
                 <AvatarImage src={currentOrganization.avatarUrl} />
               )}
