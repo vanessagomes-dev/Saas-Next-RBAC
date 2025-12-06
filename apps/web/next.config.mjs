@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // ... outras configurações ...
+ images: {
+    remotePatterns: [
+      { hostname: 'github.com' },
+      { hostname: 'avatars.githubusercontent.com' },
+    ],
+  },
+
   webpack(config, options) {
     // Itera sobre as regras de módulo existentes para encontrar a regra padrão de "asset/resource"
     config.module.rules.forEach((rule) => {
@@ -32,4 +38,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default nextConfig
