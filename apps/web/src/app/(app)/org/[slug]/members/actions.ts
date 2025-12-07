@@ -6,6 +6,7 @@ import { Role } from '@saas/auth'
 import { getCurrentOrg } from '@/auth/auth'
 import { removeMember } from '@/http/remove-member'
 import { updateMember } from '@/http/update-member'
+import { revokeInvite } from '@/http/revoke-invite'
 
 
 export async function removeMemberAction(memberId: string) {
@@ -29,4 +30,15 @@ export async function updateMemberAction(memberId: string, role: Role) {
   })
 
   revalidateTag(`${currentOrg}/members`, 'default')
+}
+
+export async function revokeInviteAction(inviteId: string) {
+  const currentOrg = await getCurrentOrg()
+
+  await revokeInvite({
+    org: currentOrg!,
+    inviteId,
+  })
+
+  revalidateTag(`${currentOrg}/invites`, 'default')
 }

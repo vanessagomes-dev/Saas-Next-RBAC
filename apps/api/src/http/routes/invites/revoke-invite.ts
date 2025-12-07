@@ -2,17 +2,17 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
-import { auth } from '@/http/middlewares/auth'
-import { BadRequestError } from '@/http/routes/_errors/bad-request-error'
-import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error'
-import { prisma } from '@/lib/prisma'
-import { getUserPermissions } from '@/utils/get-user-permissions'
+import { auth } from '@/http/middlewares/auth.js'
+import { BadRequestError } from '@/http/routes/_errors/bad-request-error.js'
+import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error.js'
+import { prisma } from '@/lib/prisma.js'
+import { getUserPermissions } from '@/utils/get-user-permissions.js'
 
 export async function revokeInvite(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
-    .post(
+    .delete(
       '/organizations/:slug/invites/:inviteId',
       {
         schema: {
