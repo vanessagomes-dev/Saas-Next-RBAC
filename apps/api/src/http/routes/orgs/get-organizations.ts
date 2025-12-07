@@ -2,8 +2,8 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
-import { auth } from '@/http/middlewares/auth'
-import { prisma } from '@/lib/prisma'
+import { auth } from '@/http/middlewares/auth.js'
+import { prisma } from '@/lib/prisma.js'
 
 const roleEnum = z.enum(['ADMIN', 'MEMBER', 'BILLING'])
 
@@ -26,7 +26,7 @@ export async function getOrganizations(app: FastifyInstance) {
                   name: z.string(),
                   slug: z.string(),
                   avatarUrl: z.string().url().nullable(),
-                  role: roleEnum,  // corrigido
+                  role: roleEnum,  
                 }),
               ),
             }),

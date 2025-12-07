@@ -2,10 +2,10 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
-import { auth } from '@/http/middlewares/auth'
-import { BadRequestError } from '@/http/routes/_errors/bad-request-error'
-import { prisma } from '@/lib/prisma'
-import { createSlug } from '@/utils/create-slug'
+import { auth } from '@/http/middlewares/auth.js'
+import { BadRequestError } from '@/http/routes/_errors/bad-request-error.js'
+import { prisma } from '@/lib/prisma.js'
+import { createSlug } from '@/utils/create-slug.js'
 
 export async function createOrganization(app: FastifyInstance) {
   app

@@ -1,3 +1,5 @@
+"use client"
+
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { Check, UserPlus2, X } from 'lucide-react'
