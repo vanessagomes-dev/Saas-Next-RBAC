@@ -69,7 +69,7 @@ export async function createOrganizationAction(data: FormData) {
       shouldAttachUsersByDomain,
     })
 
-    // revalidateTag('organizations')
+    revalidateTag('organizations', 'default')
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message } = await err.response.json()
@@ -114,7 +114,7 @@ export async function updateOrganizationAction(data: FormData) {
       shouldAttachUsersByDomain,
     })
 
-    // revalidateTag('organizations')
+    revalidateTag('organizations', 'default')
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message } = await err.response.json()
