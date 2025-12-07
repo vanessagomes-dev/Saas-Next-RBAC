@@ -1,30 +1,21 @@
 'use server'
 
 import { HTTPError } from 'ky'
+import { cookies } from 'next/headers'
 import { z } from 'zod'
 
-import { signUp } from '@/http/sign-up'
+import { acceptInvite } from '@/http/accept-invite'
+import { signInWithPassword } from '@/http/sign-in-with-password'
 
-const signUpSchema = z
-  .object({
-    name: z.string().refine((value) => value.split(' ').length > 1, {
-      message: 'Please, enter your full name',
-    }),
-    email: z
-      .string()
-      .email({ message: 'Please, provide a valid e-mail address.' }),
-    password: z
-      .string()
-      .min(6, { message: 'Password should have at least 6 characters.' }),
-    password_confirmation: z.string(),
-  })
-  .refine((data) => data.password === data.password_confirmation, {
-    message: 'Password confirmation does not match.',
-    path: ['password_confirmation'],
-  })
+const signInSchema = z.object({
+  email: z
+    .string()
+    .email({ message: 'Please, provide a valid e-mail address.' }),
+  password: z.string().min(1, { message: 'Please, provide your password.' }),
+})
 
-export async function signUpAction(data: FormData) {
-  const result = signUpSchema.safeParse(Object.fromEntries(data))
+export async function signInWithEmailAndPassword(data: FormData) {
+  const result = signInSchema.safeParse(Object.fromEntries(data))
 
   if (!result.success) {
     const errors = result.error.flatten().fieldErrors
@@ -32,14 +23,29 @@ export async function signUpAction(data: FormData) {
     return { success: false, message: null, errors }
   }
 
-  const { name, email, password } = result.data
+  const { email, password } = result.data
 
   try {
-    await signUp({
-      name,
+    const { token } = await signInWithPassword({
       email,
       password,
     })
+
+    ;(await cookies()).set('token', token, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    })
+
+    const inviteId = (await cookies()).get('inviteId')?.value
+
+    if (inviteId) {
+      try {
+        await acceptInvite(inviteId)
+        ;(await cookies()).delete('inviteId')
+      } catch (e) {
+        console.log(e)
+      }
+    }
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message } = await err.response.json()
