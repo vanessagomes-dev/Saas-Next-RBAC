@@ -6,6 +6,7 @@ import { ProjectSwitcher } from './project-switcher'
 import { OrganizationSwitcher } from './organization-switcher'
 import { ThemeSwitcher } from './theme/theme-switcher'
 import { Separator } from './ui/separator'
+import { PendingInvites } from './pending-invites'
 
 
 export async function Header() {
@@ -31,6 +32,8 @@ export async function Header() {
       </div>
 
       <div className="flex items-center gap-4">
+        
+        <PendingInvites />
         <ThemeSwitcher />
         <Separator orientation="vertical" className="h-5" />
         <ProfileButton />
