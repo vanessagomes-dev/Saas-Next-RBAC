@@ -5,6 +5,14 @@ import { redirect } from 'next/navigation'
 import { getMembership } from '@/http/get-membership'
 import { getProfile } from '@/http/get-profile'
 
+export async function isAuthenticated() {
+  // 1. Acessa os cookies do Server Component
+  const token = (await cookies()).get('token')?.value
+
+  // 2. Retorna true se o token existe (usuário logado)
+  return !!token
+}
+
 export async function getCurrentOrg() {
   return (await cookies()).get('org')?.value ?? null
 }
