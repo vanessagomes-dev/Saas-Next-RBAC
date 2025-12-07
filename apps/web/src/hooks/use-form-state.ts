@@ -32,10 +32,11 @@ export function useFormState(
       }
 
       setFormState(state)
-    })
+    if (state.success) {
+        requestFormReset(form) 
+      }
+})
+ }
 
-    requestFormReset(form)
-  }
-
-  return [formState, handleSubmit, isPending] as const
+ return [formState, handleSubmit, isPending] as const
 }
