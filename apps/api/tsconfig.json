@@ -5,9 +5,10 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
+    "@saas/tsconfig/*": ["../config/typescript-config/*"], // <--- Adicione este mapeamento!
+    "@/*": [
+      "./src/*"
+    ]
   }
+}
 }

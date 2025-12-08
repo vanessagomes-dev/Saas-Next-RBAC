@@ -1,18 +1,18 @@
-import { env } from '@saas/env'
-import type { FastifyInstance } from 'fastify'
-import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { z } from 'zod'
+import { env } from "@saas/env";
+import type { FastifyInstance } from "fastify";
+import type { ZodTypeProvider } from "fastify-type-provider-zod";
+import { z } from "zod";
 
-import { BadRequestError } from '@/http/routes/_errors/bad-request-error.js'
-import { prisma } from '@/lib/prisma.js'
+import { BadRequestError } from "@/http/routes/_errors/bad-request-error.js";
+import { prisma } from "@/lib/prisma.js";
 
 export async function authenticateWithGithub(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
-    '/sessions/github',
+    "/sessions/github",
     {
       schema: {
-        tags: ['Auth'],
-        summary: 'Authenticate with GitHub',
+        tags: ["Auth"],
+        summary: "Authenticate with GitHub",
         body: z.object({
           code: z.string(),
         }),
@@ -24,50 +24,48 @@ export async function authenticateWithGithub(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const { code } = request.body
+      const { code } = request.body;
 
       const githubOAuthURL = new URL(
-        'https://github.com/login/oauth/access_token',
-      )
+        "https://github.com/login/oauth/access_token"
+      );
 
-      githubOAuthURL.searchParams.set('client_id', env.GITHUB_OAUTH_CLIENT_ID)
+      githubOAuthURL.searchParams.set("client_id", env.GITHUB_OAUTH_CLIENT_ID);
 
       githubOAuthURL.searchParams.set(
-        'client_secret',
-        env.GITHUB_OAUTH_CLIENT_REDIRECT_URI,
-
-      )
+        "client_secret",
+        env.GITHUB_OAUTH_CLIENT_SECRET
+      );
       githubOAuthURL.searchParams.set(
-        'redirect_uri',
-        env.GITHUB_OAUTH_CLIENT_SECRET,
-
-      )
-      githubOAuthURL.searchParams.set('code', code)
+        "redirect_uri",
+        env.GITHUB_OAUTH_CLIENT_REDIRECT_URI
+      );
+      githubOAuthURL.searchParams.set("code", code);
 
       const githubAccessTokenResponse = await fetch(githubOAuthURL, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Accept: 'application/json',
+          Accept: "application/json",
         },
-      })
+      });
 
-      const githubAccessTokenData = await githubAccessTokenResponse.json()
+      const githubAccessTokenData = await githubAccessTokenResponse.json();
 
       const { access_token: githubAccessToken } = z
         .object({
           access_token: z.string(),
-          token_type: z.literal('bearer'),
+          token_type: z.literal("bearer"),
           scope: z.string(),
         })
-        .parse(githubAccessTokenData)
+        .parse(githubAccessTokenData);
 
-      const githubUserResponse = await fetch('https://api.github.com/user', {
+      const githubUserResponse = await fetch("https://api.github.com/user", {
         headers: {
           Authorization: `Bearer ${githubAccessToken}`,
         },
-      })
+      });
 
-      const githubUserData = await githubUserResponse.json()
+      const githubUserData = await githubUserResponse.json();
 
       const {
         id: githubId,
@@ -81,17 +79,17 @@ export async function authenticateWithGithub(app: FastifyInstance) {
           name: z.string().nullable(),
           email: z.string().nullable(),
         })
-        .parse(githubUserData)
+        .parse(githubUserData);
 
       if (email === null) {
         throw new BadRequestError(
-          'Your GitHub account must have an email to authenticate.',
-        )
+          "Your GitHub account must have an email to authenticate."
+        );
       }
 
       let user = await prisma.user.findUnique({
         where: { email },
-      })
+      });
 
       if (!user) {
         user = await prisma.user.create({
@@ -100,26 +98,26 @@ export async function authenticateWithGithub(app: FastifyInstance) {
             name,
             avatarUrl,
           },
-        })
+        });
       }
 
       let account = await prisma.account.findUnique({
         where: {
           provider_userId: {
-            provider: 'GITHUB',
+            provider: "GITHUB",
             userId: user.id,
           },
         },
-      })
+      });
 
       if (!account) {
         account = await prisma.account.create({
           data: {
-            provider: 'GITHUB',
+            provider: "GITHUB",
             providerAccountId: githubId,
             userId: user.id,
           },
-        })
+        });
       }
 
       const token = await reply.jwtSign(
@@ -128,12 +126,12 @@ export async function authenticateWithGithub(app: FastifyInstance) {
         },
         {
           sign: {
-            expiresIn: '7d',
+            expiresIn: "7d",
           },
-        },
-      )
+        }
+      );
 
-      return reply.status(201).send({ token })
-    },
-  )
+      return reply.status(201).send({ token });
+    }
+  );
 }

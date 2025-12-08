@@ -23,6 +23,7 @@
     "@prisma/adapter-pg": "^7.0.1",
     "@types/pg": "^8.15.6",
     "dotenv": "^17.2.3",
+    "dotenv-cli": "^7.4.4",
     "pg": "^8.16.3"
   }
 }
