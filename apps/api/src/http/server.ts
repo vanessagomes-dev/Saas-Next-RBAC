@@ -15,24 +15,20 @@ import {
 
 import { errorHandler } from '@/http/error-handler.js'
 import { authenticateWithGithub } from '@/http/routes/auth/authenticate-with-github.js'
-
 import { authenticateWithPassword } from '@/http/routes/auth/authenticate-with-password.js'
 import { getProfile } from '@/http/routes/auth/get-profile.js'
 import { requestPasswordRecover } from '@/http/routes/auth/request-password-recover.js'
 import { resetPassword } from '@/http/routes/auth/reset-password.js'
 import { getOrganizationBilling } from '@/http/routes/billing/get-organization-billing.js'
+import { acceptInvite } from '@/http/routes/invites/accept-invite.js'
 import { createInvite } from '@/http/routes/invites/create-invite.js'
 import { getInvite } from '@/http/routes/invites/get-invite.js'
-import { getInvites } from './routes/invites/get-invites.js'
-import { acceptInvite } from '@/http/routes/invites/accept-invite.js'
+import { getPendingInvites } from '@/http/routes/invites/get-pending-invites.js'
 import { rejectInvite } from '@/http/routes/invites/reject-invite.js'
 import { revokeInvite } from '@/http/routes/invites/revoke-invite.js'
-import { getPendingInvites } from '@/http/routes/invites/get-pending-invites.js'
-
 import { getMembers } from '@/http/routes/members/get-members.js'
-import { updateMember } from '@/http/routes/members/update-member.js'
 import { removeMember } from '@/http/routes/members/remove-member.js'
-
+import { updateMember } from '@/http/routes/members/update-member.js'
 import { createOrganization } from '@/http/routes/orgs/create-organization.js'
 import { getMembership } from '@/http/routes/orgs/get-membership.js'
 import { getOrganization } from '@/http/routes/orgs/get-organization.js'
@@ -47,6 +43,7 @@ import { getProjects } from '@/http/routes/projects/get-projects.js'
 import { updateProject } from '@/http/routes/projects/update-project.js'
 
 import { createAccount } from './routes/auth/create-account.js'
+import { getInvites } from './routes/invites/get-invites.js'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -122,9 +119,8 @@ app.register(getPendingInvites)
 app.register(getOrganizationBilling)
 
 app.ready().then(() => {
-  console.log(app.printRoutes());
-});
-
+  console.log(app.printRoutes())
+})
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log('HTTP server running!')

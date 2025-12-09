@@ -1,28 +1,27 @@
-import { roleSchema } from "@saas/auth";
-import type { FastifyInstance } from "fastify";
-import type { ZodTypeProvider } from "fastify-type-provider-zod";
-import { z } from "zod";
+import type { FastifyInstance } from 'fastify'
+import type { ZodTypeProvider } from 'fastify-type-provider-zod'
+import { z } from 'zod'
 
-import { auth } from "@/http/middlewares/auth.js";
-import { BadRequestError } from "@/http/routes/_errors/bad-request-error.js";
-import { prisma } from "@/lib/prisma.js";
+import { auth } from '@/http/middlewares/auth.js'
+import { BadRequestError } from '@/http/routes/_errors/bad-request-error.js'
+import { prisma } from '@/lib/prisma.js'
 
 export async function getPendingInvites(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      "/pending-invites",
+      '/pending-invites',
       {
         schema: {
-          tags: ["Invites"],
-          summary: "Get all user pending invites",
+          tags: ['Invites'],
+          summary: 'Get all user pending invites',
           response: {
             200: z.object({
               invites: z.array(
                 z.object({
                   id: z.string().uuid(),
-                  role: z.enum(["ADMIN", "MEMBER", "BILLING"]),
+                  role: z.enum(['ADMIN', 'MEMBER', 'BILLING']),
                   email: z.string().email(),
                   createdAt: z.date(),
                   organization: z.object({
@@ -35,23 +34,23 @@ export async function getPendingInvites(app: FastifyInstance) {
                       avatarUrl: z.string().url().nullable(),
                     })
                     .nullable(),
-                })
+                }),
               ),
             }),
           },
         },
       },
       async (request) => {
-        const userId = await request.getCurrentUserId();
+        const userId = await request.getCurrentUserId()
 
         const user = await prisma.user.findUnique({
           where: {
             id: userId,
           },
-        });
+        })
 
         if (!user) {
-          throw new BadRequestError("User not found.");
+          throw new BadRequestError('User not found.')
         }
 
         const invites = await prisma.invite.findMany({
@@ -76,9 +75,9 @@ export async function getPendingInvites(app: FastifyInstance) {
           where: {
             email: user.email,
           },
-        });
+        })
 
-        return { invites };
-      }
-    );
+        return { invites }
+      },
+    )
 }

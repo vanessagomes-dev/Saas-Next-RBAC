@@ -1,29 +1,16 @@
 {
-  "name": "saas-next-rbac",
+  "name": "next-saas-rbac",
   "private": true,
   "scripts": {
-    "build": "turbo  build",
-    "dev": "turbo  dev",
+    "build": "turbo build",
+    "dev": "turbo dev",
     "lint": "turbo lint"
   },
   "devDependencies": {
-    "@svgr/webpack": "^8.1.0",
     "turbo": "latest"
   },
+  "packageManager": "pnpm@8.9.0",
   "engines": {
     "node": ">=18"
-  },
-  "packageManager": "pnpm@10.23.0",
-  "workspaces": [
-    "apps/*",
-    "config/*",
-    "packages/*"
-  ],
-  "dependencies": {
-    "@prisma/adapter-pg": "^7.0.1",
-    "@types/pg": "^8.15.6",
-    "dotenv": "^17.2.3",
-    "dotenv-cli": "^7.4.4",
-    "pg": "^8.16.3"
   }
 }

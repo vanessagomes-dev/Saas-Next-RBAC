@@ -1,14 +1,10 @@
-import { ChevronsUpDown, PlusCircle } from "lucide-react";
-import Link from "next/link";
-import { getUserOrganizations } from "@/http/get-user-organizations"
-import { getCurrentOrg } from "@/auth/auth";
-type Organization = {
-    id: string;
-    name: string;
-    slug: string;
-    avatarUrl: string | null;
-}
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { ChevronsUpDown, PlusCircle } from 'lucide-react'
+import Link from 'next/link'
+
+import { getCurrentOrg } from '@/auth/auth'
+import { getOrganizations } from '@/http/get-organizations'
+
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,16 +13,17 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/drop-down-menu";
-import React from "react";
+} from './ui/dropdown-menu'
 
 export async function OrganizationSwitcher() {
-  const currentOrg = await getCurrentOrg();
+  const currentOrg = getCurrentOrg()
 
-  const { organizations } = await getUserOrganizations();
+  const { organizations } = await getOrganizations()
+
   const currentOrganization = organizations.find(
- (org: Organization) => org.slug === currentOrg
- );
+    (org) => org.slug === currentOrg,
+  )
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex w-[168px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
@@ -68,7 +65,7 @@ export async function OrganizationSwitcher() {
                   <span className="line-clamp-1">{organization.name}</span>
                 </Link>
               </DropdownMenuItem>
-            );
+            )
           })}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
@@ -80,5 +77,5 @@ export async function OrganizationSwitcher() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }

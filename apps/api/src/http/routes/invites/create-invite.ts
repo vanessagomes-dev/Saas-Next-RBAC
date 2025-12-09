@@ -1,28 +1,28 @@
-import { roleSchema } from "@saas/auth";
-import type { FastifyInstance } from "fastify";
-import type { ZodTypeProvider } from "fastify-type-provider-zod";
-import { z } from "zod";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { FastifyInstance } from 'fastify'
+import type { ZodTypeProvider } from 'fastify-type-provider-zod'
+import { z } from 'zod'
 
-import { auth } from "@/http/middlewares/auth.js";
-import { BadRequestError } from "@/http/routes/_errors/bad-request-error.js";
-import { UnauthorizedError } from "@/http/routes/_errors/unauthorized-error.js";
-import { prisma } from "@/lib/prisma.js";
-import { getUserPermissions } from "@/utils/get-user-permissions.js";
+import { auth } from '@/http/middlewares/auth.js'
+import { BadRequestError } from '@/http/routes/_errors/bad-request-error.js'
+import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error.js'
+import { prisma } from '@/lib/prisma.js'
+import { getUserPermissions } from '@/utils/get-user-permissions.js'
 
 export async function createInvite(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .post(
-      "/organizations/:slug/invites",
+      '/organizations/:slug/invites',
       {
         schema: {
-          tags: ["Invites"],
-          summary: "Create a new invite",
+          tags: ['Invites'],
+          summary: 'Create a new invite',
           security: [{ bearerAuth: [] }],
           body: z.object({
             email: z.string().email(),
-            role: z.enum(["ADMIN", "MEMBER", "BILLING"]),
+            role: z.enum(['ADMIN', 'MEMBER', 'BILLING']),
           }),
           params: z.object({
             slug: z.string(),
@@ -35,23 +35,22 @@ export async function createInvite(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        const { slug } = request.params;
-        const userId = await request.getCurrentUserId();
-        const { organization, membership } = await request.getUserMembership(
-          slug
-        );
+        const { slug } = request.params
+        const userId = await request.getCurrentUserId()
+        const { organization, membership } =
+          await request.getUserMembership(slug)
 
-        const { cannot } = getUserPermissions(userId, membership.role);
+        const { cannot } = getUserPermissions(userId, membership.role)
 
-        if (cannot("create", "Invite")) {
+        if (cannot('create', 'Invite')) {
           throw new UnauthorizedError(
-            `You're not allowed to create new invites.`
-          );
+            `You're not allowed to create new invites.`,
+          )
         }
 
-        const { email, role } = request.body;
+        const { email, role } = request.body
 
-        const [, domain] = email.split("@");
+        const [, domain] = email.split('@')
 
         // Check if the email domain is allowed
         if (
@@ -59,8 +58,8 @@ export async function createInvite(app: FastifyInstance) {
           domain !== organization.domain
         ) {
           throw new BadRequestError(
-            `Users with '${domain}' domain will join your organization automatically on login.`
-          );
+            `Users with '${domain}' domain will join your organization automatically on login.`,
+          )
         }
 
         const inviteWithSameEmail = await prisma.invite.findUnique({
@@ -70,12 +69,12 @@ export async function createInvite(app: FastifyInstance) {
               organizationId: organization.id,
             },
           },
-        });
+        })
 
         if (inviteWithSameEmail) {
           throw new BadRequestError(
-            "Another invite with same e-mail already exists."
-          );
+            'Another invite with same e-mail already exists.',
+          )
         }
 
         const memberWithSameEmail = await prisma.member.findFirst({
@@ -85,12 +84,12 @@ export async function createInvite(app: FastifyInstance) {
               email,
             },
           },
-        });
+        })
 
         if (memberWithSameEmail) {
           throw new BadRequestError(
-            "A member with this e-mail already belongs to your organization."
-          );
+            'A member with this e-mail already belongs to your organization.',
+          )
         }
 
         const invite = await prisma.invite.create({
@@ -101,11 +100,11 @@ export async function createInvite(app: FastifyInstance) {
 
             authorId: userId,
           } as any,
-        });
+        })
 
         return reply.status(201).send({
           inviteId: invite.id,
-        });
-      }
-    );
+        })
+      },
+    )
 }

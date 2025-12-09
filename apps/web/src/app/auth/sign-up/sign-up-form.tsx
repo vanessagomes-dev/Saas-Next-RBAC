@@ -15,7 +15,6 @@ import { useFormState } from '@/hooks/use-form-state'
 
 import { signInWithGithub } from '../actions'
 import { signUpAction } from './actions'
-import React from 'react'
 
 export function SignUpForm() {
   const router = useRouter()

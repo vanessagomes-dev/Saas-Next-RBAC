@@ -1,19 +1,17 @@
 {
   "extends": "@saas/tsconfig/nextjs.json",
   "compilerOptions": {
-    "jsx": "react",
     "baseUrl": ".",
     "paths": {
-  "@/*": ["./src/*"],
-  "@saas/env": ["../../packages/env"]
-},
-  "skipLibCheck": true
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.d.ts",
     ".next/types/**/*.ts"
   ],
   "exclude": [
