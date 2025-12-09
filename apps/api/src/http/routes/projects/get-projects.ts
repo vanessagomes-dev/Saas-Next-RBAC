@@ -2,10 +2,10 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
-import { auth } from '@/http/middlewares/auth'
-import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error'
-import { prisma } from '@/lib/prisma'
-import { getUserPermissions } from '@/utils/get-user-permissions'
+import { auth } from '@/http/middlewares/auth.js'
+import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error.js'
+import { prisma } from '@/lib/prisma.js'
+import { getUserPermissions } from '@/utils/get-user-permissions.js'
 
 export async function getProjects(app: FastifyInstance) {
   app
@@ -31,7 +31,7 @@ export async function getProjects(app: FastifyInstance) {
                   slug: z.string(),
                   avatarUrl: z.string().url().nullable(),
                   organizationId: z.string().uuid(),
-                  userId: z.string().uuid(),
+                  ownerId: z.string().uuid(),
                   createdAt: z.date(),
                   owner: z.object({
                     id: z.string().uuid(),
@@ -65,7 +65,7 @@ export async function getProjects(app: FastifyInstance) {
             name: true,
             description: true,
             slug: true,
-            userId: true,
+            ownerId: true,
             avatarUrl: true,
             organizationId: true,
             createdAt: true,

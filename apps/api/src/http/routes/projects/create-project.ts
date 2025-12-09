@@ -2,11 +2,11 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
-import { auth } from '@/http/middlewares/auth'
-import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error'
-import { prisma } from '@/lib/prisma'
-import { createSlug } from '@/utils/create-slug'
-import { getUserPermissions } from '@/utils/get-user-permissions'
+import { auth } from '@/http/middlewares/auth.js'
+import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error.js'
+import { prisma } from '@/lib/prisma.js'
+import { createSlug } from '@/utils/create-slug.js'
+import { getUserPermissions } from '@/utils/get-user-permissions.js'
 
 export async function createProject(app: FastifyInstance) {
   app
@@ -55,7 +55,7 @@ export async function createProject(app: FastifyInstance) {
             slug: createSlug(name),
             description,
             organizationId: organization.id,
-            userId: userId,
+            ownerId: userId,
           },
         })
 

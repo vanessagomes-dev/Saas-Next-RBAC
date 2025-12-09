@@ -3,9 +3,7 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
 import { auth } from '@/http/middlewares/auth.js'
-
 import { BadRequestError } from '@/http/routes/_errors/bad-request-error.js'
-
 import { prisma } from '@/lib/prisma.js'
 
 export async function getProfile(app: FastifyInstance) {
@@ -27,14 +25,14 @@ export async function getProfile(app: FastifyInstance) {
                 email: z.string().email(),
                 avatarUrl: z.string().url().nullable(),
               }),
-          }),
+            }),
+          },
         },
       },
-    },
-     async (request, reply) => {
+      async (request, reply) => {
         const userId = await request.getCurrentUserId()
 
-     const user = await prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
           select: {
             id: true,
             name: true,
@@ -45,12 +43,12 @@ export async function getProfile(app: FastifyInstance) {
             id: userId,
           },
         })
-        
-      if (!user) {
-        throw new BadRequestError('User not found.')
-      }
 
-      return reply.send({ user })
-    },
-  )
+        if (!user) {
+          throw new BadRequestError('User not found.')
+        }
+
+        return reply.send({ user })
+      },
+    )
 }

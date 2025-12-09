@@ -44,7 +44,7 @@ import { createProject } from '@/http/routes/projects/create-project.js'
 import { deleteProject } from '@/http/routes/projects/delete-project.js'
 import { getProject } from '@/http/routes/projects/get-project.js'
 import { getProjects } from '@/http/routes/projects/get-projects.js'
-import { updateProject } from '@/http/routes/projects/update-projects.js'
+import { updateProject } from '@/http/routes/projects/update-project.js'
 
 import { createAccount } from './routes/auth/create-account.js'
 
